@@ -68,7 +68,7 @@ namespace Valorant__
                             i += 1;
                             if(i > 200)
                             {
-                                NewLog("valorant has not been detected yet. maybe you specified the wrong valorant path.");
+                                NewLog("valorant has not been detected yet. maybe you specified the wrong valorant path or are not logged in!");
                                 i = 0;
                             }
                             Thread.Sleep(100);
