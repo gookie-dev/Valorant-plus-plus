@@ -19,7 +19,7 @@ namespace Valorant__
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Console.WriteLine("Test Push");
+            tabControl1.SelectedTab = tabPageLogs;
         }
     }
 }
