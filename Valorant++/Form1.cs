@@ -1,14 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace Valorant__
 {
     public partial class Form1 : Form
     {
         private string valorantPath = "-";
+        private dynamic userData;
+        private string password;
+        private string port;
+        private string puuid;
 
         public Form1()
         {
@@ -27,7 +37,66 @@ namespace Valorant__
         {
             GetSavedPath();
             IsValorantRunning();
-            NewLog("running...");
+            GetClientApiCredentials();
+            GetUserData();
+            NewLog(this.puuid);
+        }
+
+        private void GetUserData()
+        {
+            BypassCertificateError();
+
+            this.userData = JsonConvert.DeserializeObject(ClientApiRequest("https://127.0.0.1:" + this.port + "/chat/v1/session", this.password));
+            this.puuid = this.userData.puuid;
+            if (this.puuid.Length < 1)
+            {
+                NewLog("ERROR! cant read user data! maybe you have the launcher open but are not logged in.");
+                while (true) ;
+            }
+
+        }
+
+        private string ClientApiRequest(string url, string password)
+        {
+            System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            var client = new WebClient { Credentials = new NetworkCredential("riot", password) };
+            return client.DownloadString(url);
+        }
+
+        private static void BypassCertificateError()
+        {
+            ServicePointManager.ServerCertificateValidationCallback += delegate (Object sender1, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
+        }
+
+        private void GetClientApiCredentials()
+        {
+            NewLog("getting client api credentials...");
+            try
+            {
+                File.Copy(Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData) + @"\Riot Games\Riot Client\Config\lockfile",
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Riot Games\Riot Client\Config\Valorant DRP.txt", true);
+            }
+            catch (Exception)
+            {
+                NewLog("ERROR! cant read lockfile!");
+                while (true) ;
+            }
+
+            try
+            {
+                Stream s = File.Open(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Riot Games\Riot Client\Config\Valorant DRP.txt", FileMode.Open, FileAccess.Read);
+                StreamReader sr = new StreamReader(s);
+                string lockFile = sr.ReadLine();
+                List<string> lockList = lockFile.Split(':').ToList();
+                this.port = lockList[2];
+                this.password = lockList[3];
+            }
+            catch (Exception)
+            {
+                NewLog("ERROR! cant read client api credentials!");
+                while (true) ;
+            }
         }
 
         public delegate void DisplayValorantPathDelegate(string path);
