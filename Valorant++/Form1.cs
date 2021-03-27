@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using Dynamitey;
 using Newtonsoft.Json;
 
 namespace Valorant__
@@ -16,6 +18,7 @@ namespace Valorant__
     {
         private string valorantPath = "-";
         private dynamic userData;
+        private dynamic valorantData;
         private string password;
         private string port;
         private string puuid;
@@ -39,7 +42,25 @@ namespace Valorant__
             IsValorantRunning();
             GetClientApiCredentials();
             GetUserData();
-            NewLog(this.puuid);
+            GetValorantData();
+            NewClientApi(this.userData.ToString() + this.valorantData.ToString());
+        }
+
+        private void GetValorantData()
+        {
+            dynamic request = JsonConvert.DeserializeObject(ClientApiRequest("https://127.0.0.1:" + this.port + "/chat/v4/presences", this.password));
+            foreach(dynamic d in request.presences)
+            {
+                if(d.puuid == this.puuid)
+                {
+                    string playerData = Dynamic.InvokeGet(d, "private");
+                    byte[] data = Convert.FromBase64String(playerData);
+                    this.valorantData = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data));
+                    return;
+                }
+            }
+            NewLog("ERROR! cant read valorant data! maybe only the launcher is open and not the game");
+            while (true) ;
         }
 
         private void GetUserData()
@@ -53,7 +74,7 @@ namespace Valorant__
                 NewLog("ERROR! cant read user data! maybe you have the launcher open but are not logged in.");
                 while (true) ;
             }
-
+            NewLog("found player: " + this.userData.game_name + "#" + this.userData.game_tag);
         }
 
         private string ClientApiRequest(string url, string password)
@@ -174,6 +195,19 @@ namespace Valorant__
             else
             {
                 this.Invoke(new NewLogDelegate(NewLog), new object[] { log });
+            }
+        }
+
+        public delegate void NewClientApiDelegate(string data);
+        private void NewClientApi(string data)
+        {
+            if (!this.txtBoxLogs.InvokeRequired)
+            {
+                this.txtBoxClientApi.Text = data;
+            }
+            else
+            {
+                this.Invoke(new NewClientApiDelegate(NewClientApi), new object[] { data });
             }
         }
 

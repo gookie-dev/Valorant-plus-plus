@@ -54,10 +54,9 @@ namespace Valorant__
             this.tabControl1.Controls.Add(this.tabPageClientApi);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(6);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(938, 1012);
+            this.tabControl1.Size = new System.Drawing.Size(473, 555);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPageSettings
@@ -66,47 +65,50 @@ namespace Valorant__
             this.tabPageSettings.Controls.Add(this.label3);
             this.tabPageSettings.Controls.Add(this.label2);
             this.tabPageSettings.Controls.Add(this.label1);
-            this.tabPageSettings.Location = new System.Drawing.Point(8, 39);
-            this.tabPageSettings.Margin = new System.Windows.Forms.Padding(6);
+            this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
-            this.tabPageSettings.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPageSettings.Size = new System.Drawing.Size(922, 965);
+            this.tabPageSettings.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPageSettings.Size = new System.Drawing.Size(465, 529);
             this.tabPageSettings.TabIndex = 1;
             this.tabPageSettings.Text = "Settings";
             this.tabPageSettings.UseVisualStyleBackColor = true;
             // 
             // txtValorantPath
             // 
-            this.txtValorantPath.Location = new System.Drawing.Point(219, 25);
+            this.txtValorantPath.Location = new System.Drawing.Point(110, 13);
+            this.txtValorantPath.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtValorantPath.Name = "txtValorantPath";
             this.txtValorantPath.ReadOnly = true;
-            this.txtValorantPath.Size = new System.Drawing.Size(656, 31);
+            this.txtValorantPath.Size = new System.Drawing.Size(330, 20);
             this.txtValorantPath.TabIndex = 3;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(34, 155);
+            this.label3.Location = new System.Drawing.Point(17, 81);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(70, 25);
+            this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 2;
             this.label3.Text = "label3";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 87);
+            this.label2.Location = new System.Drawing.Point(17, 45);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 25);
+            this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "label2";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(34, 32);
+            this.label1.Location = new System.Drawing.Point(17, 17);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(142, 25);
+            this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Valorant Path";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -114,10 +116,9 @@ namespace Valorant__
             // tabPageLogs
             // 
             this.tabPageLogs.Controls.Add(this.txtBoxLogs);
-            this.tabPageLogs.Location = new System.Drawing.Point(8, 39);
-            this.tabPageLogs.Margin = new System.Windows.Forms.Padding(6);
+            this.tabPageLogs.Location = new System.Drawing.Point(4, 22);
             this.tabPageLogs.Name = "tabPageLogs";
-            this.tabPageLogs.Size = new System.Drawing.Size(922, 965);
+            this.tabPageLogs.Size = new System.Drawing.Size(461, 500);
             this.tabPageLogs.TabIndex = 2;
             this.tabPageLogs.Text = "Logs";
             this.tabPageLogs.UseVisualStyleBackColor = true;
@@ -126,20 +127,18 @@ namespace Valorant__
             // 
             this.txtBoxLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBoxLogs.Location = new System.Drawing.Point(0, 0);
-            this.txtBoxLogs.Margin = new System.Windows.Forms.Padding(6);
             this.txtBoxLogs.Multiline = true;
             this.txtBoxLogs.Name = "txtBoxLogs";
             this.txtBoxLogs.ReadOnly = true;
-            this.txtBoxLogs.Size = new System.Drawing.Size(922, 965);
+            this.txtBoxLogs.Size = new System.Drawing.Size(461, 500);
             this.txtBoxLogs.TabIndex = 0;
             // 
             // tabPageClientApi
             // 
             this.tabPageClientApi.Controls.Add(this.txtBoxClientApi);
-            this.tabPageClientApi.Location = new System.Drawing.Point(8, 39);
-            this.tabPageClientApi.Margin = new System.Windows.Forms.Padding(6);
+            this.tabPageClientApi.Location = new System.Drawing.Point(4, 22);
             this.tabPageClientApi.Name = "tabPageClientApi";
-            this.tabPageClientApi.Size = new System.Drawing.Size(922, 965);
+            this.tabPageClientApi.Size = new System.Drawing.Size(461, 500);
             this.tabPageClientApi.TabIndex = 3;
             this.tabPageClientApi.Text = "Client API";
             this.tabPageClientApi.UseVisualStyleBackColor = true;
@@ -148,11 +147,10 @@ namespace Valorant__
             // 
             this.txtBoxClientApi.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBoxClientApi.Location = new System.Drawing.Point(0, 0);
-            this.txtBoxClientApi.Margin = new System.Windows.Forms.Padding(6);
             this.txtBoxClientApi.Multiline = true;
             this.txtBoxClientApi.Name = "txtBoxClientApi";
             this.txtBoxClientApi.ReadOnly = true;
-            this.txtBoxClientApi.Size = new System.Drawing.Size(922, 965);
+            this.txtBoxClientApi.Size = new System.Drawing.Size(461, 500);
             this.txtBoxClientApi.TabIndex = 1;
             // 
             // openFileDialog1
@@ -161,13 +159,12 @@ namespace Valorant__
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(938, 1012);
+            this.ClientSize = new System.Drawing.Size(473, 555);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Valorant++";
