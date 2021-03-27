@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -30,6 +31,7 @@ namespace Valorant__
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.MinimumSize = new Size(450, 520);
             tabControl1.SelectedTab = tabPageLogs;
             Thread mainThread = new Thread(new ThreadStart(Main));
             mainThread.IsBackground = true;
@@ -43,7 +45,7 @@ namespace Valorant__
             GetClientApiCredentials();
             GetUserData();
             GetValorantData();
-            NewClientApi(this.userData.ToString() + this.valorantData.ToString());
+            NewClientApi(this.userData.ToString() + this.valorantData);
         }
 
         private void GetValorantData()
@@ -54,8 +56,9 @@ namespace Valorant__
                 if(d.puuid == this.puuid)
                 {
                     string playerData = Dynamic.InvokeGet(d, "private");
-                    byte[] data = Convert.FromBase64String(playerData);
-                    this.valorantData = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data));
+                    // byte[] data = Convert.FromBase64String(playerData);
+                    //this.valorantData = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data));
+                    this.valorantData = playerData;
                     return;
                 }
             }
@@ -211,7 +214,7 @@ namespace Valorant__
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void txtValorantPath_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "*.exe | *.exe";
             openFileDialog1.Title = "Valorant++";
@@ -220,7 +223,7 @@ namespace Valorant__
             openFileDialog1.ShowDialog();
             string path = openFileDialog1.FileName;
 
-            if(path != "")
+            if (path != "")
             {
                 this.valorantPath = path;
                 DisplayValorantPath(this.valorantPath);
@@ -240,7 +243,6 @@ namespace Valorant__
                 NewLog("valorant path changed! please restart valorant++");
                 MessageBox.Show("The path has been changed. Please restart Valorant++", "Valorant++", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
     }
 }
