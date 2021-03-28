@@ -67,10 +67,106 @@ namespace Valorant__
             string state = String.Empty;
             string largeImageKey = $"valorant";
             string largeImageText = String.Empty;
-            string smallImageKey = $"green";
+            string smallImageKey = String.Empty;
             string smallImageText = String.Empty;
+            byte[] data = Convert.FromBase64String(this.valorantData);
+            dynamic vData = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data));
 
-            if(discord)
+            if(vData.isValid == "true")
+            {
+                smallImageKey = $"green";
+            }
+            else
+            {
+                smallImageKey = $"orange";
+            }
+
+            if (vData.partyState == "MATCHMAKING")
+            {
+                details = "In Queue";
+                switch (vData.queueId.ToString())
+                {
+                    case "deathmatch":
+                        state = "Deathmatch";
+                        break;
+                    case "unrated":
+                        state = "Unrated";
+                        break;
+                    case "competitive":
+                        state = "Competitive";
+                        break;
+                    case "spikerush":
+                        state = "Spike Rush";
+                        break;
+                    case "ggteam":
+                        state = "Escalation";
+                        break;
+                }
+
+                switch (vData.partySize.ToString())
+                {
+                    case "1":
+                        state += " (Solo)";
+                        break;
+                    case "2":
+                        state += " (Duo)";
+                        break;
+                    case "3":
+                        state += " (Trio)";
+                        break;
+                    case "4":
+                        state += " (4)";
+                        break;
+                    case "5":
+                        state += " (5)";
+                        break;
+                }
+            }
+
+            if (vData.partyOwnerMatchMap == "/Game/Maps/Poveglia/Range")
+            {
+                details = "The Range";
+                smallImageKey = $"valorant";
+                largeImageKey = $"range";
+                largeImageText = "The Range";
+            }
+
+            if(vData.partyState == "CUSTOM_GAME_SETUP" && vData.sessionLoopState == "MENUS")
+            {
+                details = "Custom Lobby";
+                switch (vData.matchMap.ToString())
+                {
+                    case "/Game/Maps/Bonsai/Bonsai":
+                        state = "Split";
+                        largeImageText = "Split";
+                        largeImageKey = $"split";
+                        break;
+                    case "/Game/Maps/Ascent/Ascent":
+                        state = "Ascent";
+                        largeImageText = "Ascent";
+                        largeImageKey = $"ascent";
+                        break;
+                    case "/Game/Maps/Duality/Duality":
+                        state = "Bind";
+                        largeImageText = "Bind";
+                        largeImageKey = $"bind";
+                        break;
+                    case "/Game/Maps/Port/Port":
+                        state = "Icebox";
+                        largeImageText = "Icebox";
+                        largeImageKey = $"icebox";
+                        break;
+                    case "/Game/Maps/Triad/Triad":
+                        state = "Haven";
+                        largeImageText = "Haven";
+                        largeImageKey = $"haven";
+                        break;
+                }
+                smallImageKey = $"valorant";
+                state += " (" + vData.partySize + "/" + vData.maxPartySize + ")";
+            }
+
+            if (discord)
             {
                 drpc.SetPresence(new DiscordRPC.RichPresence()
                 {
