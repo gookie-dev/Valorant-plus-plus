@@ -12,6 +12,8 @@ using System.Threading;
 using System.Windows.Forms;
 using Dynamitey;
 using Newtonsoft.Json;
+using DiscordRPC;
+
 
 namespace Valorant__
 {
@@ -19,10 +21,12 @@ namespace Valorant__
     {
         private string valorantPath = "-";
         private dynamic userData;
-        private dynamic valorantData;
+        private string valorantData;
         private string password;
         private string port;
-        private string puuid;
+        private string puuid = "";
+        private DiscordRpcClient drpc;
+        bool discord = true;
 
         public Form1()
         {
@@ -44,40 +48,108 @@ namespace Valorant__
             IsValorantRunning();
             GetClientApiCredentials();
             GetUserData();
+            NewLog("getting valorant data from " + this.userData.game_name + "#" + this.userData.game_tag + " ...");
             GetValorantData();
-            NewClientApi(this.userData.ToString() + this.valorantData);
+            NewLog("valorant data from " + this.userData.game_name + "#" + this.userData.game_tag + " were detected!");
+            Thread isValorantStillRunningThread = new Thread(new ThreadStart(IsValorantStillRunning));
+            isValorantStillRunningThread.IsBackground = true;
+            isValorantStillRunningThread.Start();
+            drpc = new DiscordRpcClient("825736299583504435");
+            drpc.Initialize();
+            Thread updateThread = new Thread(new ThreadStart(ValorantDataUpdate));
+            updateThread.IsBackground = true;
+            updateThread.Start();
+        }
+
+        public void DiscordUpdater()
+        {
+            string details = String.Empty;
+            string state = String.Empty;
+            string largeImageKey = $"valorant";
+            string largeImageText = String.Empty;
+            string smallImageKey = $"green";
+            string smallImageText = String.Empty;
+
+            if(discord)
+            {
+                drpc.SetPresence(new DiscordRPC.RichPresence()
+                {
+                    Details = details,
+                    State = state,
+                    Assets = new Assets()
+                    {
+                        LargeImageKey = largeImageKey,
+                        LargeImageText = largeImageText,
+                        SmallImageKey = smallImageKey,
+                        SmallImageText = smallImageText
+                    }
+                });
+            }
+        }
+
+        private string GenerateClientApiData()
+        {
+            byte[] data = Convert.FromBase64String(this.valorantData);
+            return userData.ToString().Replace("{", "").Replace("}", "").Remove(0, 1) + JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data)).ToString().Replace("{", "").Replace("}", "").Remove(0, 1);
+        }
+
+        private void ValorantDataUpdate()
+        {
+            NewClientApi(GenerateClientApiData());
+            DiscordUpdater();
+            while (true)
+            {
+                string currentValorantData = this.valorantData;
+                GetValorantData();
+                if(currentValorantData != this.valorantData)
+                {
+                    NewClientApi(GenerateClientApiData());
+                    DiscordUpdater();
+                }
+                Thread.Sleep(100);
+            }
+        }
+
+        private void IsValorantStillRunning()
+        {
+            while(Process.GetProcessesByName("VALORANT").Length > 0) {Thread.Sleep(100);}
+            NewLog("valorant was closed! valorant++ will close in 10 seconds.");
+            Thread.Sleep(10000);
+            Application.Exit();
         }
 
         private void GetValorantData()
         {
-            dynamic request = JsonConvert.DeserializeObject(ClientApiRequest("https://127.0.0.1:" + this.port + "/chat/v4/presences", this.password));
-            foreach(dynamic d in request.presences)
+            while(true)
             {
-                if(d.puuid == this.puuid)
+                dynamic request = JsonConvert.DeserializeObject(ClientApiRequest("https://127.0.0.1:" + this.port + "/chat/v4/presences", this.password));
+                foreach(dynamic d in request.presences)
                 {
-                    string playerData = Dynamic.InvokeGet(d, "private");
-                    // byte[] data = Convert.FromBase64String(playerData);
-                    //this.valorantData = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(data));
-                    this.valorantData = playerData;
-                    return;
+                    if(d.puuid == this.puuid)
+                    {
+                        this.valorantData = Dynamic.InvokeGet(d, "private").ToString();
+                        return;
+                    }
                 }
+                Thread.Sleep(100);
             }
-            NewLog("ERROR! cant read valorant data! maybe only the launcher is open and not the game");
-            while (true) ;
         }
 
         private void GetUserData()
         {
             BypassCertificateError();
 
-            this.userData = JsonConvert.DeserializeObject(ClientApiRequest("https://127.0.0.1:" + this.port + "/chat/v1/session", this.password));
-            this.puuid = this.userData.puuid;
-            if (this.puuid.Length < 1)
+            while (true)
             {
-                NewLog("ERROR! cant read user data! maybe you have the launcher open but are not logged in.");
-                while (true) ;
+                this.userData = JsonConvert.DeserializeObject(ClientApiRequest("https://127.0.0.1:" + this.port + "/chat/v1/session", this.password));
+                this.puuid = this.userData.puuid;
+                if(this.userData.puuid > 1 && this.userData.game_name > 1)
+                {
+                    NewLog("found player: " + this.userData.game_name + "#" + this.userData.game_tag);
+                    return;
+                }
+                Thread.Sleep(100);
             }
-            NewLog("found player: " + this.userData.game_name + "#" + this.userData.game_tag);
         }
 
         private string ClientApiRequest(string url, string password)
@@ -158,7 +230,7 @@ namespace Valorant__
                         int i = 1;
                         while(Process.GetProcessesByName("VALORANT").Length < 1)
                         {
-                            i += 1;
+                            i ++;
                             if(i > 200)
                             {
                                 NewLog("valorant has not been detected yet. maybe you specified the wrong valorant path or are not logged in!");
@@ -242,6 +314,21 @@ namespace Valorant__
 
                 NewLog("valorant path changed! please restart valorant++");
                 MessageBox.Show("The path has been changed. Please restart Valorant++", "Valorant++", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            this.discord = checkBox1.Checked;
+            if(this.discord == false)
+            {
+                drpc.ClearPresence();
+                NewLog("discord rich presence was disabled");
+            }
+            if (this.discord == true)
+            {
+                DiscordUpdater();
+                NewLog("discord rich presence was enabled");
             }
         }
     }

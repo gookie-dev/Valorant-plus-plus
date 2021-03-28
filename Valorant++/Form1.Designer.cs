@@ -36,13 +36,14 @@ namespace Valorant__
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.txtValorantPath = new System.Windows.Forms.TextBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.tabPageLogs = new System.Windows.Forms.TabPage();
             this.txtBoxLogs = new System.Windows.Forms.TextBox();
             this.tabPageClientApi = new System.Windows.Forms.TabPage();
             this.txtBoxClientApi = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.txtValorantPath = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -88,6 +89,7 @@ namespace Valorant__
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.checkBox1, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.txtValorantPath, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.checkBox2, 2, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 15);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
@@ -132,59 +134,15 @@ namespace Valorant__
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(146, 16);
             this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
-            // 
-            // tabPageLogs
-            // 
-            this.tabPageLogs.Controls.Add(this.txtBoxLogs);
-            this.tabPageLogs.Location = new System.Drawing.Point(4, 25);
-            this.tabPageLogs.Name = "tabPageLogs";
-            this.tabPageLogs.Size = new System.Drawing.Size(465, 526);
-            this.tabPageLogs.TabIndex = 2;
-            this.tabPageLogs.Text = "Logs";
-            this.tabPageLogs.UseVisualStyleBackColor = true;
-            // 
-            // txtBoxLogs
-            // 
-            this.txtBoxLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBoxLogs.Location = new System.Drawing.Point(0, 0);
-            this.txtBoxLogs.Multiline = true;
-            this.txtBoxLogs.Name = "txtBoxLogs";
-            this.txtBoxLogs.ReadOnly = true;
-            this.txtBoxLogs.Size = new System.Drawing.Size(465, 526);
-            this.txtBoxLogs.TabIndex = 0;
-            // 
-            // tabPageClientApi
-            // 
-            this.tabPageClientApi.Controls.Add(this.txtBoxClientApi);
-            this.tabPageClientApi.Location = new System.Drawing.Point(4, 25);
-            this.tabPageClientApi.Name = "tabPageClientApi";
-            this.tabPageClientApi.Size = new System.Drawing.Size(465, 526);
-            this.tabPageClientApi.TabIndex = 3;
-            this.tabPageClientApi.Text = "Client API";
-            this.tabPageClientApi.UseVisualStyleBackColor = true;
-            // 
-            // txtBoxClientApi
-            // 
-            this.txtBoxClientApi.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxClientApi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBoxClientApi.Location = new System.Drawing.Point(0, 0);
-            this.txtBoxClientApi.Multiline = true;
-            this.txtBoxClientApi.Name = "txtBoxClientApi";
-            this.txtBoxClientApi.ReadOnly = true;
-            this.txtBoxClientApi.Size = new System.Drawing.Size(465, 526);
-            this.txtBoxClientApi.TabIndex = 1;
-            // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.label3.Text = "show Rank";
             // 
             // checkBox1
             // 
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox1.Location = new System.Drawing.Point(163, 3);
             this.checkBox1.Name = "checkBox1";
@@ -192,6 +150,7 @@ namespace Valorant__
             this.checkBox1.TabIndex = 3;
             this.checkBox1.Text = "Enable";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // txtValorantPath
             // 
@@ -204,6 +163,66 @@ namespace Valorant__
             this.txtValorantPath.Size = new System.Drawing.Size(294, 22);
             this.txtValorantPath.TabIndex = 4;
             this.txtValorantPath.Click += new System.EventHandler(this.txtValorantPath_Click);
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Enabled = false;
+            this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox2.Location = new System.Drawing.Point(163, 59);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(294, 20);
+            this.checkBox2.TabIndex = 5;
+            this.checkBox2.Text = "Enable";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // tabPageLogs
+            // 
+            this.tabPageLogs.Controls.Add(this.txtBoxLogs);
+            this.tabPageLogs.Location = new System.Drawing.Point(4, 25);
+            this.tabPageLogs.Name = "tabPageLogs";
+            this.tabPageLogs.Size = new System.Drawing.Size(476, 532);
+            this.tabPageLogs.TabIndex = 2;
+            this.tabPageLogs.Text = "Logs";
+            this.tabPageLogs.UseVisualStyleBackColor = true;
+            // 
+            // txtBoxLogs
+            // 
+            this.txtBoxLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtBoxLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBoxLogs.Location = new System.Drawing.Point(0, 0);
+            this.txtBoxLogs.Multiline = true;
+            this.txtBoxLogs.Name = "txtBoxLogs";
+            this.txtBoxLogs.ReadOnly = true;
+            this.txtBoxLogs.Size = new System.Drawing.Size(476, 532);
+            this.txtBoxLogs.TabIndex = 0;
+            // 
+            // tabPageClientApi
+            // 
+            this.tabPageClientApi.Controls.Add(this.txtBoxClientApi);
+            this.tabPageClientApi.Location = new System.Drawing.Point(4, 25);
+            this.tabPageClientApi.Name = "tabPageClientApi";
+            this.tabPageClientApi.Size = new System.Drawing.Size(476, 532);
+            this.tabPageClientApi.TabIndex = 3;
+            this.tabPageClientApi.Text = "Client API";
+            this.tabPageClientApi.UseVisualStyleBackColor = true;
+            // 
+            // txtBoxClientApi
+            // 
+            this.txtBoxClientApi.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtBoxClientApi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBoxClientApi.Location = new System.Drawing.Point(0, 0);
+            this.txtBoxClientApi.Multiline = true;
+            this.txtBoxClientApi.Name = "txtBoxClientApi";
+            this.txtBoxClientApi.ReadOnly = true;
+            this.txtBoxClientApi.Size = new System.Drawing.Size(476, 532);
+            this.txtBoxClientApi.TabIndex = 1;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
@@ -242,6 +261,7 @@ namespace Valorant__
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TextBox txtValorantPath;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
 
